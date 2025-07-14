@@ -8,13 +8,13 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
 
-def listen():
+def listen(language='en-IN'):
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Listening...")
+        print(f"Listening ({language})...")
         audio = r.listen(source)
     try:
-        command = r.recognize_google(audio)
+        command = r.recognize_google(audio, language=language)
         print(f"You said: {command}")
         return command
     except Exception as e:
@@ -31,7 +31,9 @@ def main():
             print("Goodbye!")
             break
         elif user_input.lower() == 'voice':
-            command = listen()
+            lang_choice = input("Choose language: 1) English 2) Hindi [1/2]: ")
+            language = 'en-IN' if lang_choice.strip() == '1' else 'hi-IN'
+            command = listen(language)
         else:
             command = user_input
         if not command:
